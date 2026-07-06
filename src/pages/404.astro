@@ -1,73 +1,58 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import Badge from "../components/ui/Badge.astro"
-import { getCollection } from "astro:content"
-import { Image } from "astro:assets"
-import weirdFrieren from "../assets/images/weird-frieren.webp"
-import { calcReadTime } from "../utils/reading-time"
-
-const entries = await getCollection("post")
-const posts = entries
-    .filter((entry) => !entry.data.draft)
-    .map((entry) => ({
-        id: entry.id,
-        slug: entry.id,
-        readTime: calcReadTime(entry.body ?? ""),
-        ...entry.data
-    }))
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3)
 ---
 
 <Layout title="404 - Not Found">
-    <main class="page flex flex-col items-center space-y-10">
-        <section class="flex flex-col items-center text-center gap-6 mt-10">
-            <Image
-                src={weirdFrieren}
-                alt="Confused Frieren looking around"
-                class="w-64 h-auto md:w-80 rounded-xl"
+    <main class="page flex flex-col items-center justify-center gap-8 py-20">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 200 160"
+            role="img"
+            aria-label="Corgi dog"
+            class="w-56 h-auto md:w-72 text-primary"
+        >
+            <g fill="currentColor">
+                <!-- body -->
+                <ellipse cx="100" cy="110" rx="55" ry="32" />
+                <!-- head -->
+                <ellipse cx="55" cy="80" rx="28" ry="26" />
+                <!-- ears -->
+                <path d="M38 60 L30 35 L52 52 Z" />
+                <path d="M72 60 L80 35 L58 52 Z" />
+                <!-- legs -->
+                <rect x="60" y="128" width="12" height="22" rx="4" />
+                <rect x="82" y="132" width="12" height="20" rx="4" />
+                <rect x="108" y="132" width="12" height="20" rx="4" />
+                <rect x="130" y="128" width="12" height="22" rx="4" />
+                <!-- tail -->
+                <path d="M150 100 q20 -10 22 -25 q-12 6 -22 5 Z" />
+            </g>
+            <!-- white face blaze -->
+            <path
+                d="M55 60 q-10 10 -2 22 q8 -6 10 -18 Z"
+                fill="var(--background)"
             />
-            <div>
-                <h1 class="text-4xl md:text-5xl font-bold">
-                    Ah... You got it wrong
-                </h1>
-                <p class="text-lg text-muted-foreground mt-4 max-w-lg mx-auto">
-                    Looks like this page drifted away into the void. But hey,
-                    since you're here, why not read something else?
-                </p>
-            </div>
-        </section>
-
-        <section class="w-full text-left mt-10">
-            <h2 class="text-2xl font-semibold mb-6">Recent Posts</h2>
-            <div class="flex flex-col gap-3">
-                {
-                    posts.map((post) => {
-                        return (
-                            <section class="flex flex-col gap-2 group hover:bg-muted px-3 py-8 rounded-md transition-all duration-300">
-                                <div class="flex flex-col md:flex-row gap-2 md:justify-between md:items-start">
-                                    <a href={`/posts/${post.slug}`}>
-                                        <h2 class="text-2xl group-hover:text-primary leading-tight">
-                                            {post.title}
-                                        </h2>
-                                    </a>
-                                    <span class="text-muted-foreground text-xs shrink-0 whitespace-nowrap md:mt-1 md:text-right text-left mt-1">
-                                        {post.readTime} min read
-                                    </span>
-                                </div>
-                                <p class="text-muted-foreground">
-                                    {post.frontmatter}
-                                </p>
-                                <section class="flex gap-2 flex-wrap">
-                                    {post.tags.map((tag) => {
-                                        return <Badge content={tag} />
-                                    })}
-                                </section>
-                            </section>
-                        )
-                    })
-                }
-            </div>
-        </section>
+            <!-- eyes -->
+            <circle cx="46" cy="76" r="3" fill="#1a1a1a" />
+            <circle cx="66" cy="76" r="3" fill="#1a1a1a" />
+            <!-- nose -->
+            <ellipse cx="36" cy="86" rx="4" ry="3" fill="#1a1a1a" />
+            <!-- mouth -->
+            <path
+                d="M34 92 q4 4 8 0"
+                stroke="#1a1a1a"
+                stroke-width="1.5"
+                fill="none"
+                stroke-linecap="round"
+            />
+        </svg>
+        <div class="text-center space-y-3">
+            <h1 class="text-3xl md:text-4xl font-bold">
+                threats didn't found...
+            </h1>
+            <p class="text-muted-foreground">
+                The page you're looking for isn't here.
+            </p>
+        </div>
     </main>
 </Layout>
