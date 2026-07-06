@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content"
 import Layout from "@/layouts/Layout.astro"
-import Badge from "@/components/ui/Badge.astro"
 import MobileTOC from "@/components/posts/MobileTOC.astro"
 import DesktopTOC from "@/components/posts/DesktopTOC.astro"
 import ShareButtons from "@/components/posts/ShareButtons.astro"
@@ -11,9 +10,9 @@ import { parseDate } from "@/utils/date"
 import { calcReadTime } from "@/utils/reading-time"
 
 export async function getStaticPaths() {
-    const allPosts = await getCollection("post")
-    const posts = allPosts
-        .filter((p) => !p.data.draft)
+    const allStories = await getCollection("story")
+    const stories = allStories
+        .filter((s) => !s.data.draft)
         .sort((a, b) => {
             return (
                 parseDate(b.data.date).getTime() -
@@ -21,34 +20,34 @@ export async function getStaticPaths() {
             )
         })
 
-    return posts.map((post, index) => ({
-        params: { slug: post.id },
+    return stories.map((story, index) => ({
+        params: { slug: story.id },
         props: {
-            post,
-            prevPost:
-                index < posts.length - 1
+            story,
+            prevStory:
+                index < stories.length - 1
                     ? {
-                          id: posts[index + 1].id,
-                          title: posts[index + 1].data.title
+                          id: stories[index + 1].id,
+                          title: stories[index + 1].data.title
                       }
                     : null,
-            nextPost:
+            nextStory:
                 index > 0
                     ? {
-                          id: posts[index - 1].id,
-                          title: posts[index - 1].data.title
+                          id: stories[index - 1].id,
+                          title: stories[index - 1].data.title
                       }
                     : null
         }
     }))
 }
 
-const { post, prevPost, nextPost } = Astro.props
-const { Content, headings } = await render(post)
+const { story, prevStory, nextStory } = Astro.props
+const { Content, headings } = await render(story)
 
-const readTime = calcReadTime(post.body ?? "")
+const readTime = calcReadTime(story.body ?? "")
 
-const dateObj = parseDate(post.data.date)
+const dateObj = parseDate(story.data.date)
 const dateFormatted = dateObj.toLocaleDateString("en-US", {
     timeZone: "UTC",
     month: "short",
@@ -57,39 +56,25 @@ const dateFormatted = dateObj.toLocaleDateString("en-US", {
 })
 const isoDate = dateObj.toISOString()
 
-let updatedDateFormatted: string | null = null
-if (post.data.updatedDate) {
-    const updatedObj = parseDate(post.data.updatedDate)
-    updatedDateFormatted = updatedObj.toLocaleDateString("en-US", {
-        timeZone: "UTC",
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-    })
-}
+const ogImage = story.data.image?.src
+const storyUrl = new URL(Astro.url.pathname, Astro.site || Astro.url.origin)
+    .href
 
-const ogImage = post.data.image?.src
-const postUrl = new URL(Astro.url.pathname, Astro.site || Astro.url.origin).href
-
-const allEntries = await getCollection("post")
-const relatedPosts = allEntries
-    .filter((p) => !p.data.draft && p.id !== post.id)
-    .map((p) => ({
-        id: p.id,
-        title: p.data.title,
-        frontmatter: p.data.frontmatter,
-        tags: p.data.tags,
-        readTime: calcReadTime(p.body ?? ""),
-        sharedTags: p.data.tags.filter((t) => post.data.tags.includes(t)).length
+const allEntries = await getCollection("story")
+const relatedStories = allEntries
+    .filter((s) => !s.data.draft && s.id !== story.id)
+    .map((s) => ({
+        id: s.id,
+        title: s.data.title,
+        frontmatter: s.data.frontmatter,
+        readTime: calcReadTime(s.body ?? "")
     }))
-    .filter((p) => p.sharedTags > 0)
-    .sort((a, b) => b.sharedTags - a.sharedTags)
     .slice(0, 3)
 ---
 
 <Layout
-    title={`${post.data.title} | ${siteConfig.title}`}
-    description={post.data.frontmatter}
+    title={`${story.data.title} | ${siteConfig.title}`}
+    description={story.data.frontmatter}
     type="article"
     image={ogImage}
 >
@@ -104,10 +89,10 @@ const relatedPosts = allEntries
     <main class="page pb-20 mt-10 relative">
         <div class="mb-10 w-full">
             <a
-                href="/"
+                href="/stories"
                 class="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
             >
-                <span>←</span> Back to writing
+                <span>←</span> Back to stories
             </a>
         </div>
 
@@ -116,44 +101,23 @@ const relatedPosts = allEntries
                 <h1
                     class="text-4xl md:text-5xl lg:text-5xl font-bold tracking-tight mb-6 text-foreground leading-tight"
                 >
-                    {post.data.title}
+                    {story.data.title}
                 </h1>
                 <div
                     class="flex items-center gap-2 text-sm text-muted-foreground mb-4 flex-wrap"
                 >
                     <time datetime={isoDate}>{dateFormatted}</time>
-                    {
-                        updatedDateFormatted && (
-                            <>
-                                <span>·</span>
-                                <span class="italic">
-                                    Updated {updatedDateFormatted}
-                                </span>
-                            </>
-                        )
-                    }
                     <span>·</span>
                     <span>{readTime} min read</span>
-                    <span>·</span>
-                    <div class="flex gap-2 flex-wrap">
-                        {
-                            post.data.tags.map((tag: string) => (
-                                <Badge
-                                    content={tag}
-                                    href={`/tags/${encodeURIComponent(tag)}`}
-                                />
-                            ))
-                        }
-                    </div>
                 </div>
                 <div class="mb-6">
-                    <ShareButtons url={postUrl} title={post.data.title} />
+                    <ShareButtons url={storyUrl} title={story.data.title} />
                 </div>
                 {
-                    post.data.image && (
+                    story.data.image && (
                         <Image
-                            src={post.data.image}
-                            alt={post.data.title}
+                            src={story.data.image}
+                            alt={story.data.title}
                             class="w-full h-auto rounded-xl mt-8 object-cover aspect-video border border-border"
                             loading="eager"
                             fetchpriority="high"
@@ -178,21 +142,21 @@ const relatedPosts = allEntries
         <div class="mt-16 pt-8 border-t border-border">
             <span
                 class="text-xs uppercase tracking-widest text-muted-foreground mb-4 block"
-                >Share this post</span
+                >Share this story</span
             >
-            <ShareButtons url={postUrl} title={post.data.title} />
+            <ShareButtons url={storyUrl} title={story.data.title} />
         </div>
 
         {
-            relatedPosts.length > 0 && (
+            relatedStories.length > 0 && (
                 <div class="mt-16">
                     <span class="text-xs uppercase tracking-widest text-muted-foreground mb-6 block">
-                        Related posts
+                        More stories
                     </span>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {relatedPosts.map((related) => (
+                        {relatedStories.map((related) => (
                             <a
-                                href={`/posts/${related.id}`}
+                                href={`/stories/${related.id}`}
                                 class="group p-4 border border-border rounded-lg hover:bg-muted transition-colors"
                             >
                                 <h3 class="font-medium group-hover:text-primary transition-colors line-clamp-2">
@@ -214,16 +178,16 @@ const relatedPosts = allEntries
         <nav class="mt-16 pt-8 border-t border-border grid grid-cols-2 gap-4">
             <div>
                 {
-                    prevPost && (
+                    prevStory && (
                         <a
-                            href={`/posts/${prevPost.id}`}
+                            href={`/stories/${prevStory.id}`}
                             class="group flex flex-col gap-1"
                         >
                             <span class="text-xs text-muted-foreground">
                                 ← Older
                             </span>
                             <span class="text-sm font-medium group-hover:text-primary transition-colors line-clamp-1">
-                                {prevPost.title}
+                                {prevStory.title}
                             </span>
                         </a>
                     )
@@ -231,16 +195,16 @@ const relatedPosts = allEntries
             </div>
             <div class="text-right">
                 {
-                    nextPost && (
+                    nextStory && (
                         <a
-                            href={`/posts/${nextPost.id}`}
+                            href={`/stories/${nextStory.id}`}
                             class="group flex flex-col gap-1 items-end"
                         >
                             <span class="text-xs text-muted-foreground">
                                 Newer →
                             </span>
                             <span class="text-sm font-medium group-hover:text-primary transition-colors line-clamp-1">
-                                {nextPost.title}
+                                {nextStory.title}
                             </span>
                         </a>
                     )
@@ -250,10 +214,10 @@ const relatedPosts = allEntries
 
         <div class="mt-10 flex justify-center">
             <a
-                href="/"
+                href="/stories"
                 class="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
             >
-                ← Back to writing
+                ← Back to stories
             </a>
         </div>
     </main>
@@ -265,7 +229,7 @@ const relatedPosts = allEntries
         set:html={JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
-            headline: post.data.title,
+            headline: story.data.title,
             image: ogImage
                 ? new URL(ogImage, Astro.site || Astro.url.origin).href
                 : undefined,
@@ -274,7 +238,7 @@ const relatedPosts = allEntries
                 name: siteConfig.author.name
             },
             datePublished: isoDate,
-            description: post.data.frontmatter,
+            description: story.data.frontmatter,
             url: Astro.site
                 ? new URL(Astro.url.pathname, Astro.site).href
                 : Astro.url.href

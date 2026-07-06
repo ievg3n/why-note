@@ -1,0 +1,9 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Stories from "@/components/Stories.astro"
+import { siteConfig } from "@/config"
+---
+
+<Layout title={`Stories | ${siteConfig.title}`}>
+    <Stories page={1} />
+</Layout>

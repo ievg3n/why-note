@@ -6,18 +6,18 @@ tags: ["showcase", "components", "design", "astro", "web"]
 image: "../../assets/images/dsg.webp"
 ---
 
-import Callout from '@/components/ui/Callout.astro';
-import Figure from '@/components/ui/Figure.astro';
-import Tabs from '@/components/ui/Tabs.astro';
-import TabItem from '@/components/ui/TabItem.astro';
-import Steps from '@/components/ui/Steps.astro';
-import Quote from '@/components/ui/Quote.astro';
-import ProsCons from '@/components/ui/ProsCons.astro';
-import YouTube from '@/components/ui/YouTube.astro';
-import LinkCard from '@/components/ui/LinkCard.astro';
-import Divider from '@/components/ui/Divider.astro';
+import Callout from "@/components/ui/Callout.astro"
+import Figure from "@/components/ui/Figure.astro"
+import Tabs from "@/components/ui/Tabs.astro"
+import TabItem from "@/components/ui/TabItem.astro"
+import Steps from "@/components/ui/Steps.astro"
+import Quote from "@/components/ui/Quote.astro"
+import ProsCons from "@/components/ui/ProsCons.astro"
+import YouTube from "@/components/ui/YouTube.astro"
+import LinkCard from "@/components/ui/LinkCard.astro"
+import Divider from "@/components/ui/Divider.astro"
 
-Writing documentation and tech blogs can often feel repetitive and, visually, quite monotonous. Walls of text aren't fun to read, but with **MDX** (Markdown + JSX) running on Astro, we can easily inject interactive, beautifully styled React-like components right into our posts. 
+Writing documentation and tech blogs can often feel repetitive and, visually, quite monotonous. Walls of text aren't fun to read, but with **MDX** (Markdown + JSX) running on Astro, we can easily inject interactive, beautifully styled React-like components right into our posts.
 
 In this post, we'll walk through how we transformed a standard markdown blog into an interactive learning experience using a custom design system.
 
@@ -28,37 +28,28 @@ In this post, we'll walk through how we transformed a standard markdown blog int
 Sometimes you need to grab the reader's attention quickly. Maybe a dependency is deprecated, or there is a security vulnerability they should be aware of. Instead of bold text, we built a universal `<Callout />` component.
 
 <Callout type="note">
-**Did you know?** The latest version of Astro allows you to use standard `markdown` alongside `mdx` files seamlessly within your collections!
+    **Did you know?** The latest version of Astro allows you to use standard
+    `markdown` alongside `mdx` files seamlessly within your collections!
 </Callout>
 
 <Callout type="tip" title="Pro Tip: Use TypeScript">
-When writing complex framework components, leveraging TypeScript can heavily reduce run-time errors by catching prop validation issues early.
+    When writing complex framework components, leveraging TypeScript can heavily
+    reduce run-time errors by catching prop validation issues early.
 </Callout>
 
 <Callout type="warning" title="Breaking Change">
-I recently migrated from Astro v3 to v5. Please ensure your `content.config.ts` has been correctly updated to use `astro:content`.
+    I recently migrated from Astro v3 to v5. Please ensure your
+    `content.config.ts` has been correctly updated to use `astro:content`.
 </Callout>
 
 ## Interactive Installation Guides
 
 When documenting a library, giving your developers choices is essential. Notice how many top-tier docs offer `npm`, `pnpm`, and `yarn` installation options? With our custom `<Tabs>` component, providing this functionality is completely frictionless:
 
-<Tabs tabs={['npm', 'pnpm', 'yarn']}>
-  <TabItem>
-    ```bash
-    npm install @lucide/astro
-    ```
-  </TabItem>
-  <TabItem>
-    ```bash
-    pnpm add @lucide/astro
-    ```
-  </TabItem>
-  <TabItem>
-    ```bash
-    yarn add @lucide/astro
-    ```
-  </TabItem>
+<Tabs tabs={["npm", "pnpm", "yarn"]}>
+    <TabItem>```bash npm install @lucide/astro ```</TabItem>
+    <TabItem>```bash pnpm add @lucide/astro ```</TabItem>
+    <TabItem>```bash yarn add @lucide/astro ```</TabItem>
 </Tabs>
 
 ## Following the Process
@@ -66,18 +57,19 @@ When documenting a library, giving your developers choices is essential. Notice 
 Instead of standard unordered lists (`<ul>`) which often blur into the rest of the text, we created a `<Steps>` component that automatically renders a clear vertical timeline for tutorials:
 
 <Steps>
-  <div>
-    ### Step 1: Initialize your project
-    Run `npm create astro@latest` and choose the blog template to instantly get a highly optimized site scaffolding.
-  </div>
-  <div>
-    ### Step 2: Add Tailwind CSS
-    Run `npx astro add tailwind` to securely install the latest version of Tailwind into your UI layer.
-  </div>
-  <div>
-    ### Step 3: Write MDX
-    Add the `@astrojs/mdx` plugin and start writing content instantly!
-  </div>
+    <div>
+        ### Step 1: Initialize your project Run `npm create astro@latest` and
+        choose the blog template to instantly get a highly optimized site
+        scaffolding.
+    </div>
+    <div>
+        ### Step 2: Add Tailwind CSS Run `npx astro add tailwind` to securely
+        install the latest version of Tailwind into your UI layer.
+    </div>
+    <div>
+        ### Step 3: Write MDX Add the `@astrojs/mdx` plugin and start writing
+        content instantly!
+    </div>
 </Steps>
 
 ## First-class Code Formatting
@@ -99,7 +91,9 @@ const posts = await getCollection('post');
 ```
 
 <Quote author="Chris Coyier" title="Co-founder of CodePen">
-MDX is a format that lets you seamlessly write JSX in your Markdown documents. You can import components, such as interactive charts or alerts, and embed them within your content.
+    MDX is a format that lets you seamlessly write JSX in your Markdown
+    documents. You can import components, such as interactive charts or alerts,
+    and embed them within your content.
 </Quote>
 
 <Divider />
@@ -108,12 +102,23 @@ MDX is a format that lets you seamlessly write JSX in your Markdown documents. Y
 
 When reviewing frameworks or methodologies, a `ProsCons` list is invaluable for your readers to digest the benefits quickly:
 
-<ProsCons 
-  pros={['Visually stunning pages out-of-the-box', 'Higher reader engagement metrics', 'Enforces strict design system consistency']} 
-  cons={['Increases initial build-time slightly', 'Requires author to remember component syntax']} 
+<ProsCons
+    pros={[
+        "Visually stunning pages out-of-the-box",
+        "Higher reader engagement metrics",
+        "Enforces strict design system consistency"
+    ]}
+    cons={[
+        "Increases initial build-time slightly",
+        "Requires author to remember component syntax"
+    ]}
 />
 
-<Figure src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" alt="Programming laptop" caption="Programming at night: where bugs hide and features shine." />
+<Figure
+    src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
+    alt="Programming laptop"
+    caption="Programming at night: where bugs hide and features shine."
+/>
 
 Sometimes explaining complex architectural concepts requires video. I built a zero-layout-shift YouTube embedder natively for MDX:
 
@@ -121,6 +126,11 @@ Sometimes explaining complex architectural concepts requires video. I built a ze
 
 And if you ever need to reference external documentation, instead of a standard hyperlink, use a `<LinkCard>`:
 
-<LinkCard href="https://astro.build/blog/astro-5/" title="Astro 5.0 Release" description="Astro 5 is here and brings a new Content Layer API, improved type safety, and better build performance." domain="astro.build" />
+<LinkCard
+    href="https://astro.build/blog/astro-5/"
+    title="Astro 5.0 Release"
+    description="Astro 5 is here and brings a new Content Layer API, improved type safety, and better build performance."
+    domain="astro.build"
+/>
 
 With these components, your technical blog won't just be informative—it will be an experience. 🎉

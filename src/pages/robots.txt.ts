@@ -1,13 +1,16 @@
-import type { APIRoute } from "astro";
+import type { APIRoute } from "astro"
 
 const getRobotsTxt = (sitemapURL: URL) => `\
 User-agent: *
 Allow: /
 
 Sitemap: ${sitemapURL.href}
-`;
+`
 
 export const GET: APIRoute = ({ site }) => {
-  const sitemapURL = new URL("sitemap-index.xml", site);
-  return new Response(getRobotsTxt(sitemapURL));
-};
+    if (!site) {
+        return new Response("Site URL is not configured.", { status: 500 })
+    }
+    const sitemapURL = new URL("sitemap-index.xml", site)
+    return new Response(getRobotsTxt(sitemapURL))
+}

@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from "astro:content"
 import {
     Terminal,
     GitMerge,
@@ -7,74 +7,80 @@ import {
     Cog,
     PenTool,
     Book,
-    Sparkles,
-    Github,
-    Twitter,
-    Linkedin,
-} from "@lucide/astro";
+    Sparkles
+} from "@lucide/astro"
 
-import Separator from "./ui/Separator.astro";
-import ActivityCard from "./about/ActivityCard.astro";
-import DecorativeKanji from "./about/DecorativeKanji.astro";
-import ProjectCard from "./ProjectCard.astro";
-import Timeline from "./about/Timeline.astro";
-import { siteConfig } from "@/config";
+import Separator from "./ui/Separator.astro"
+import SocialIcon from "./ui/SocialIcon.astro"
+import ActivityCard from "./about/ActivityCard.astro"
+import DecorativeKanji from "./about/DecorativeKanji.astro"
+import ProjectCard from "./ProjectCard.astro"
+import Timeline from "./about/Timeline.astro"
+import { siteConfig } from "@/config"
 
-import mhrImage from "../assets/images/mhr.webp";
-import frierenImage from "../assets/images/frieren.webp";
-import pomImage from "../assets/images/pom.webp";
-import neffexImage from "../assets/images/neffex.webp";
+import mhrImage from "../assets/images/mhr.webp"
+import frierenImage from "../assets/images/frieren.webp"
+import pomImage from "../assets/images/pom.webp"
+import neffexImage from "../assets/images/neffex.webp"
 
 const timeline = [
     {
         year: "2019",
         title: "Wrote first line of code",
         description: "Hello, World in Java",
-        icon: Terminal,
+        icon: Terminal
     },
     {
         year: "2021",
         title: "Joined Github",
         description: "Pushed my console based java projects",
-        icon: GitMerge,
+        icon: GitMerge
     },
     {
         year: "Early 2022",
         title: "Opened my first issue on Github",
         description: "A bug issue on daisyUI",
-        icon: Rocket,
+        icon: Rocket
     },
     {
         year: "Mid 2022",
         title: "Started building a ton of pet projects",
         description: "It was hard at first!",
-        icon: Cog,
+        icon: Cog
     },
     {
         year: "Late 2022",
         title: "Made a blog post",
         description: "Just for documenting my progress",
-        icon: Book,
+        icon: Book
     },
     {
         year: "2023",
         title: "Started getting side hustle offers",
         description: "Along with my friends",
-        icon: Terminal,
+        icon: Terminal
     },
     {
         year: "2024 - 2025",
         title: "Started my capstone",
         description: "App development with Flutter",
-        icon: PenTool,
+        icon: PenTool
     },
     {
         year: "Now",
         title: "Building what's next",
         description: "Always learning, always shipping",
-        icon: Sparkles,
-    },
-];
+        icon: Sparkles
+    }
+]
+
+const yearsOfExp =
+    new Date().getFullYear() -
+    Math.min(
+        ...timeline
+            .map((t) => parseInt(t.year, 10))
+            .filter((n) => !Number.isNaN(n))
+    )
 
 const projects = [
     {
@@ -82,29 +88,29 @@ const projects = [
         description:
             "A Node.js REST API that provides real-time PCSO lotto results via web scraping, with Redis-based caching and locking to ensure data freshness and prevent duplicate requests.",
         link: "https://github.com/jiseeeh/pcso-lotto-api",
-        techStack: ["Node.js", "Cheerio", "Redis"],
+        techStack: ["Node.js", "Cheerio", "Redis"]
     },
     {
         title: "U Do Note",
         description:
             "Flutter note-taking app integrating Spaced Repetition, Leitner, Feynman techniques, and etc with OCR via Google ML Kit and AI summarization using OpenAI.",
         link: "https://github.com/jiseeeh/u-do-note",
-        techStack: ["Flutter", "Firebase", "OpenAI"],
-    },
-];
+        techStack: ["Flutter", "Firebase", "OpenAI"]
+    }
+]
 
-const entries = await getCollection("post");
+const entries = await getCollection("post")
 
-let postsPerYear = 0;
+let postsPerYear = 0
 if (entries.length > 0) {
     const years = entries.map((entry) => {
-        const [, , y] = entry.data.date.split("/");
-        return Number(y);
-    });
-    const minYear = Math.min(...years);
-    const maxYear = Math.max(...years);
-    const activeYears = Math.max(1, maxYear - minYear + 1);
-    postsPerYear = Math.ceil(entries.length / activeYears);
+        const [, , y] = entry.data.date.split("/")
+        return Number(y)
+    })
+    const minYear = Math.min(...years)
+    const maxYear = Math.max(...years)
+    const activeYears = Math.max(1, maxYear - minYear + 1)
+    postsPerYear = Math.ceil(entries.length / activeYears)
 }
 ---
 
@@ -129,7 +135,7 @@ if (entries.length > 0) {
                             aria-label="GitHub"
                             class="text-muted-foreground hover:text-primary transition-colors"
                         >
-                            <Github size={20} />
+                            <SocialIcon name="github" size={20} />
                         </a>
                     )}
                     {siteConfig.socials.twitter && (
@@ -140,7 +146,7 @@ if (entries.length > 0) {
                             aria-label="Twitter"
                             class="text-muted-foreground hover:text-primary transition-colors"
                         >
-                            <Twitter size={20} />
+                            <SocialIcon name="twitter" size={20} />
                         </a>
                     )}
                     {siteConfig.socials.linkedin && (
@@ -151,7 +157,7 @@ if (entries.length > 0) {
                             aria-label="LinkedIn"
                             class="text-muted-foreground hover:text-primary transition-colors"
                         >
-                            <Linkedin size={20} />
+                            <SocialIcon name="linkedin" size={20} />
                         </a>
                     )}
                 </div>
@@ -167,7 +173,11 @@ if (entries.length > 0) {
     <section
         class="grid grid-cols-2 md:grid-cols-4 w-full border-l border-t border-border"
     >
-        <DecorativeKanji title="2+" subTitle="Years of exp" kanji="歴" />
+        <DecorativeKanji
+            title={`${yearsOfExp}+`}
+            subTitle="Years of exp"
+            kanji="歴"
+        />
         <DecorativeKanji
             title={projects.length.toString()}
             subTitle="Projects Shipped"

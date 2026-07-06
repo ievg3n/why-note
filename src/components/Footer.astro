@@ -1,15 +1,14 @@
 ---
-import { siteConfig } from "@/config";
-import { Github, Twitter, Linkedin } from "@lucide/astro";
+import { siteConfig } from "@/config"
+import SocialIcon from "./ui/SocialIcon.astro"
 ---
 
 <footer class="border-t border-border mt-20 py-10 px-10 lg:px-20">
-    <div
-        class="flex flex-col md:flex-row justify-between items-center gap-6"
-    >
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
         <div class="flex flex-col items-center md:items-start gap-2">
             <span class="text-sm text-muted-foreground">
-                &copy; {new Date().getFullYear()} {siteConfig.title}
+                &copy; {new Date().getFullYear()}
+                {siteConfig.title}
             </span>
             <span class="text-xs text-muted-foreground">
                 Built with <a
@@ -31,7 +30,7 @@ import { Github, Twitter, Linkedin } from "@lucide/astro";
                         aria-label="GitHub"
                         class="text-muted-foreground hover:text-primary transition-colors"
                     >
-                        <Github size={18} />
+                        <SocialIcon name="github" size={18} />
                     </a>
                 )
             }
@@ -44,7 +43,7 @@ import { Github, Twitter, Linkedin } from "@lucide/astro";
                         aria-label="Twitter"
                         class="text-muted-foreground hover:text-primary transition-colors"
                     >
-                        <Twitter size={18} />
+                        <SocialIcon name="twitter" size={18} />
                     </a>
                 )
             }
@@ -57,16 +56,10 @@ import { Github, Twitter, Linkedin } from "@lucide/astro";
                         aria-label="LinkedIn"
                         class="text-muted-foreground hover:text-primary transition-colors"
                     >
-                        <Linkedin size={18} />
+                        <SocialIcon name="linkedin" size={18} />
                     </a>
                 )
             }
-            <a
-                href="/feed.xml"
-                class="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-                Subscribe to RSS
-            </a>
         </div>
     </div>
 </footer>

@@ -1,32 +1,27 @@
-import type { SiteConfig } from "./types";
+import type { SiteConfig } from "./types"
 
 export const siteConfig: SiteConfig = {
-    title: "Serene Ink",
+    title: "Why Note",
     description: "Notes from someone still figuring it out — shipped anyway.",
-    siteUrl: "https://serene-ink.pages.dev",
     author: {
-        name: "Jiseeeh",
-        bio: "Somewhere between a junior and someone who knows what they're doing..",
+        name: "ievg3n",
+        bio: "life editor"
     },
     nav: [
         { label: "Writing", href: "/" },
+        { label: "Stories", href: "/stories" },
         { label: "Tags", href: "/tags" },
-        { label: "About", href: "/about" },
+        { label: "About", href: "/about" }
     ],
     socials: {
-        github: "https://github.com/jiseeeh",
-        twitter: "https://x.com/username",
-        linkedin: "https://ph.linkedin.com/in/name",
+        github: "",
+        linkedin: "https://ph.linkedin.com/in/ievg3n"
     },
     postsPerPage: 5,
     analytics: {
         umami: {
             websiteId: "",
-            src: "",
-        },
-    },
-    rss: {
-        title: "Jiseeeh's Blog",
-        description: "Notes from someone still figuring it out — shipped anyway.",
-    },
-};
+            src: ""
+        }
+    }
+}

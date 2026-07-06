@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content"
-import Badge from "./ui/Badge.astro"
 import { siteConfig } from "@/config"
 import { calcReadTime } from "@/utils/reading-time"
 
@@ -10,8 +9,8 @@ interface Props {
 
 const { page = 1 } = Astro.props
 
-const entries = await getCollection("post")
-const allPosts = entries
+const entries = await getCollection("story")
+const allStories = entries
     .filter((entry) => !entry.data.draft)
     .map((entry) => ({
         id: entry.id,
@@ -21,48 +20,48 @@ const allPosts = entries
     }))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-const totalPages = Math.ceil(allPosts.length / siteConfig.postsPerPage)
-const posts = allPosts.slice(
+const totalPages = Math.ceil(allStories.length / siteConfig.postsPerPage)
+const stories = allStories.slice(
     (page - 1) * siteConfig.postsPerPage,
     page * siteConfig.postsPerPage
 )
 
-type MappedPost = (typeof posts)[number]
+type MappedStory = (typeof stories)[number]
 
 const monthName = (n: number) =>
     new Date(2000, n - 1).toLocaleString("en", { month: "short" })
 
-const dateRange = (postsInMonth: MappedPost[]) => {
-    const days = postsInMonth.map((p) => Number(p.date.split("/")[1]))
+const dateRange = (storiesInMonth: MappedStory[]) => {
+    const days = storiesInMonth.map((s) => Number(s.date.split("/")[1]))
     const min = Math.min(...days)
     const max = Math.max(...days)
     return min === max ? String(min) : `${min} - ${max}`
 }
 
-const grouped = posts.reduce(
-    (acc, post) => {
-        const [m, , y] = post.date.split("/")
+const grouped = stories.reduce(
+    (acc, story) => {
+        const [m, , y] = story.date.split("/")
         const month = monthName(Number(m))
         if (!acc[y]) acc[y] = {}
         if (!acc[y][month]) acc[y][month] = []
-        acc[y][month].push(post)
+        acc[y][month].push(story)
         return acc
     },
-    {} as Record<string, Record<string, MappedPost[]>>
+    {} as Record<string, Record<string, MappedStory[]>>
 )
 
-const pageUrl = (p: number) => (p === 1 ? "/" : `/page/${p}`)
+const pageUrl = (p: number) => (p === 1 ? "/stories" : `/stories/${p}`)
 ---
 
 <main class="page">
     <span class="uppercase text-primary font-medium tracking-widest"
-        >notebook</span
+        >stories</span
     >
 
-    <h1 class="text-4xl mt-10">Writing</h1>
+    <h1 class="text-4xl mt-10">Narratives</h1>
     <p class="text-lg max-w-122 text-muted-foreground">
-        Thoughts on systems, craft, and the quiet details of building things
-        well.
+        Longer-form stories and explorations that don't fit the typical blog
+        post format.
     </p>
 
     <section class="mt-20 my-5">
@@ -73,40 +72,31 @@ const pageUrl = (p: number) => (p === 1 ? "/" : `/page/${p}`)
                     <section>
                         <h2 class="text-2xl">{year}</h2>
                         {Object.entries(grouped[year]).map(
-                            ([month, monthPosts]) => (
+                            ([month, monthStories]) => (
                                 <section>
                                     <h3 class="text-sm text-muted-foreground uppercase font-medium tracking-widest">
-                                        {month} {dateRange(monthPosts)}
+                                        {month} {dateRange(monthStories)}
                                     </h3>
                                     <hr class="mt-2" />
                                     <section class="flex flex-col gap-3 my-5">
-                                        {monthPosts.map((post) => (
+                                        {monthStories.map((story) => (
                                             <section class="flex flex-col gap-2 group hover:bg-muted px-3 py-8 rounded-md transition-all duration-300 relative overflow-hidden">
                                                 <div class="flex flex-col md:flex-row gap-2 md:justify-between md:items-start">
                                                     <a
-                                                        href={`/posts/${post.slug}`}
+                                                        href={`/stories/${story.slug}`}
                                                     >
                                                         <h2 class="text-2xl group-hover:text-primary leading-tight">
-                                                            {post.title}
+                                                            {story.title}
                                                         </h2>
                                                     </a>
                                                     <span class="text-muted-foreground text-xs shrink-0 whitespace-nowrap md:mt-1 md:text-right text-left mt-1">
-                                                        {post.readTime} min read
+                                                        {story.readTime} min
+                                                        read
                                                     </span>
                                                 </div>
                                                 <p class="text-muted-foreground">
-                                                    {post.frontmatter}
+                                                    {story.frontmatter}
                                                 </p>
-                                                <section class="flex gap-2 flex-wrap">
-                                                    {post.tags.map((tag) => (
-                                                        <Badge
-                                                            content={tag}
-                                                            href={`/tags/${encodeURIComponent(
-                                                                tag
-                                                            )}`}
-                                                        />
-                                                    ))}
-                                                </section>
                                             </section>
                                         ))}
                                     </section>

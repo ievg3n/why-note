@@ -1,37 +1,37 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import Badge from "@/components/ui/Badge.astro";
-import { siteConfig } from "@/config";
-import { calcReadTime } from "@/utils/reading-time";
+import { getCollection } from "astro:content"
+import Layout from "@/layouts/Layout.astro"
+import Badge from "@/components/ui/Badge.astro"
+import { siteConfig } from "@/config"
+import { calcReadTime } from "@/utils/reading-time"
 
 export async function getStaticPaths() {
-    const entries = await getCollection("post");
-    const posts = entries.filter((entry) => !entry.data.draft);
+    const entries = await getCollection("post")
+    const posts = entries.filter((entry) => !entry.data.draft)
 
-    const tags = new Set<string>();
+    const tags = new Set<string>()
     posts.forEach((post) => {
-        post.data.tags.forEach((tag) => tags.add(tag));
-    });
+        post.data.tags.forEach((tag) => tags.add(tag))
+    })
 
     return [...tags].map((tag) => ({
         params: { tag },
-        props: { tag },
-    }));
+        props: { tag }
+    }))
 }
 
-const { tag } = Astro.props;
+const { tag } = Astro.props
 
-const entries = await getCollection("post");
+const entries = await getCollection("post")
 const posts = entries
     .filter((entry) => !entry.data.draft && entry.data.tags.includes(tag))
     .map((entry) => ({
         id: entry.id,
         slug: entry.id,
         readTime: calcReadTime(entry.body ?? ""),
-        ...entry.data,
+        ...entry.data
     }))
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 ---
 
 <Layout title={`Posts tagged "${tag}" | ${siteConfig.title}`}>
@@ -51,7 +51,9 @@ const posts = entries
         <h1 class="text-4xl mt-10">#{tag}</h1>
         <p class="text-lg text-muted-foreground">
             {posts.length}
-            {posts.length === 1 ? "post" : "posts"} tagged with &ldquo;{tag}&rdquo;
+            {posts.length === 1 ? "post" : "posts"} tagged with &ldquo;{
+                tag
+            }&rdquo;
         </p>
 
         <section class="mt-20 flex flex-col gap-3">
@@ -71,7 +73,10 @@ const posts = entries
                         <p class="text-muted-foreground">{post.frontmatter}</p>
                         <section class="flex gap-2 flex-wrap">
                             {post.tags.map((t) => (
-                                <Badge content={t} href={`/tags/${t}`} />
+                                <Badge
+                                    content={t}
+                                    href={`/tags/${encodeURIComponent(t)}`}
+                                />
                             ))}
                         </section>
                     </section>

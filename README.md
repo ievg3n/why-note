@@ -13,21 +13,23 @@ Serene Ink is a minimalist, elegant, and blazing-fast Astro blog template design
 ## 🧞 Setting Up
 
 1. **Clone the repository** (or use the template):
-   ```sh
-   git clone https://github.com/your-username/serene-ink.git my-blog
-   cd my-blog
-   ```
+
+    ```sh
+    git clone https://github.com/your-username/serene-ink.git my-blog
+    cd my-blog
+    ```
 
 2. **Install dependencies**:
-   ```sh
-   pnpm install
-   ```
+
+    ```sh
+    pnpm install
+    ```
 
 3. **Start the local development server**:
-   ```sh
-   pnpm dev
-   ```
-   Open `localhost:4321` in your browser.
+    ```sh
+    pnpm dev
+    ```
+    Open `localhost:4321` in your browser.
 
 ## ✍️ Personalization
 
@@ -37,34 +39,33 @@ This is the **primary configuration file**. Open it and update these values to m
 
 ```ts
 export const siteConfig = {
-  title: "Your Blog Name",
-  description: "Your blog description.",
-  siteUrl: "https://your-domain.com",
-  author: {
-    name: "Your Name",
-    bio: "A short bio about yourself.",
-  },
-  nav: [
-    { label: "Writing", href: "/" },
-    { label: "About", href: "/about" },
-  ],
-  socials: {
-    github: "https://github.com/your-username",
-    twitter: "",     // leave empty to hide
-    linkedin: "",    // leave empty to hide
-  },
-  postsPerPage: 5,
-  analytics: {
-    umami: {
-      websiteId: "", // e.g., "a1b2c3d4-..."
-      src: "",       // e.g., "https://cloud.umami.is/script.js"
+    title: "Your Blog Name",
+    description: "Your blog description.",
+    author: {
+        name: "Your Name",
+        bio: "A short bio about yourself."
     },
-  },
-  rss: {
-    title: "Your Blog",
-    description: "Your RSS feed description.",
-  },
-};
+    nav: [
+        { label: "Writing", href: "/" },
+        { label: "About", href: "/about" }
+    ],
+    socials: {
+        github: "https://github.com/your-username",
+        twitter: "", // leave empty to hide
+        linkedin: "" // leave empty to hide
+    },
+    postsPerPage: 5,
+    analytics: {
+        umami: {
+            websiteId: "", // e.g., "a1b2c3d4-..."
+            src: "" // e.g., "https://cloud.umami.is/script.js"
+        }
+    },
+    rss: {
+        title: "Your Blog",
+        description: "Your RSS feed description."
+    }
+}
 ```
 
 ### Additional Personalization
@@ -99,15 +100,15 @@ Your content goes here...
 
 ### Frontmatter Fields
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `title` | string | ✅ | The post title |
-| `date` | string | ✅ | Publish date in `MM/DD/YYYY` format |
-| `frontmatter` | string | ✅ | Short summary (used on listing, RSS, and search) |
-| `tags` | string[] | ✅ | Array of tags for categorization |
-| `draft` | boolean | ❌ | Set to `true` to hide from all listings (default: `false`) |
-| `updatedDate` | string | ❌ | Last updated date in `MM/DD/YYYY` format |
-| `image` | string | ❌ | Path to a cover image (relative to `src/assets/`) |
+| Field         | Type     | Required | Description                                                |
+| ------------- | -------- | -------- | ---------------------------------------------------------- |
+| `title`       | string   | ✅       | The post title                                             |
+| `date`        | string   | ✅       | Publish date in `MM/DD/YYYY` format                        |
+| `frontmatter` | string   | ✅       | Short summary (used on listing, RSS, and search)           |
+| `tags`        | string[] | ✅       | Array of tags for categorization                           |
+| `draft`       | boolean  | ❌       | Set to `true` to hide from all listings (default: `false`) |
+| `updatedDate` | string   | ❌       | Last updated date in `MM/DD/YYYY` format                   |
+| `image`       | string   | ❌       | Path to a cover image (relative to `src/assets/`)          |
 
 ### Organizing Posts
 
@@ -116,10 +117,10 @@ You can organize your posts into subdirectories inside `src/posts/` (e.g., `src/
 When nesting posts, use the `@/` alias to comfortably import out-of-the-box components without worrying about relative path depths:
 
 ```mdx
-import Callout from '@/components/ui/Callout.astro';
+import Callout from "@/components/ui/Callout.astro"
 ```
 
-*(Note that the `image` frontmatter property still requires relative paths like `../../../assets/images/cover.webp` when deeply nested.)*
+_(Note that the `image` frontmatter property still requires relative paths like `../../../assets/images/cover.webp` when deeply nested.)_
 
 ## 📊 Analytics
 
@@ -128,14 +129,14 @@ Serene Ink supports [Umami](https://umami.is/) analytics out of the box. To enab
 1. Create a free account at [umami.is](https://umami.is/) (or self-host).
 2. Add your website and get your **Website ID** and **Script URL**.
 3. Update `src/config.ts`:
-   ```ts
-   analytics: {
-     umami: {
-       websiteId: "your-website-id",
-       src: "https://cloud.umami.is/script.js",
-     },
-   },
-   ```
+    ```ts
+    analytics: {
+      umami: {
+        websiteId: "your-website-id",
+        src: "https://cloud.umami.is/script.js",
+      },
+    },
+    ```
 
 When both fields are empty, no analytics script is injected.
 
@@ -144,15 +145,16 @@ When both fields are empty, no analytics script is injected.
 This template is configured as a static site, compatible with hosts like **Cloudflare Pages**, **Vercel**, and **Netlify**.
 
 **Deploying to Cloudflare Pages:**
+
 1. Push your code to a GitHub or GitLab repository.
 2. Log in to your Cloudflare dashboard → **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**.
 3. Select your repository and configure:
-   - **Framework preset:** Astro
-   - **Build command:** `pnpm run build`
-   - **Build output directory:** `dist`
+    - **Framework preset:** Astro
+    - **Build command:** `pnpm run build`
+    - **Build output directory:** `dist`
 4. Click **Save and Deploy**.
 
-*(Don't forget to update your `site` URL in `astro.config.mjs` once deployed!)*
+_(Don't forget to update your `site` URL in `astro.config.mjs` once deployed!)_
 
 ## 📜 License
 
