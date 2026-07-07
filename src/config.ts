@@ -1,11 +1,11 @@
 import type { SiteConfig } from "./types"
 
 export const siteConfig: SiteConfig = {
-    title: "Why Note",
+    title: "WayeDigital",
     description: "Notes from someone still figuring it out — shipped anyway.",
     author: {
         name: "ievg3n",
-        bio: "life editor"
+        bio: ""
     },
     nav: [
         { label: "Writing", href: "/" },
